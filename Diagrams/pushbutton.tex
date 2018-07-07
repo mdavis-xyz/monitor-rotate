@@ -1,0 +1,30 @@
+\documentclass[tikz, border=10pt]{standalone}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{pgffor}
+\usepackage{pgfplots}
+\usepackage{calc}
+\usepackage[american, nofetsolderdot]{circuitikz}
+\usepackage{ifthen}
+\usepackage{units}
+\usepackage{circuitikz}
+
+\begin{document}
+
+\begin{tikzpicture}%[node distance = 2 cm, auto, scale=1]
+  \xdef\top{2.5}
+  \xdef\mid{0}
+  \xdef\bottom{-3}
+  \node[rground, scale=-1] (sup) at (0,\top) {};
+  \draw (sup) to[R={$100k\Omega$}] (0,\mid)
+              to[push button] (0,\bottom)  node[ground] {};
+  \node[above of=sup, node distance = 0.8 cm] {$5V$};
+  \draw (0,\mid) -- (1.5,\mid) node[right] {BUTTON\_PIN};
+%  \draw (0,0) to[R={$100k\Omega$}] (0,5);
+\end{tikzpicture}
+
+\end{document}

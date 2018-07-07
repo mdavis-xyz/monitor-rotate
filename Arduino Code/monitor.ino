@@ -44,16 +44,6 @@
 orientation previous_orientation = START_ORIENTATION;
 
 
-// There is a button you press, to manually send
-// A command to the computer even if the rotation hasn't
-// changed recently
-#define BUTTON_PIN 12
-
-// Since we're polling the accelerometer, we need not bother using interrupts
-// for the button. Instead we just read the button state each loop and compare
-// it to the previous loop
-boolean previous_button_state = 1; // active low, with a 100k pull up resistor
-
 // We send some diagnostics to the computer, e.g. when starting up.
 //
 // If we want to tell the computer we've detected a change, we
@@ -72,7 +62,6 @@ char * textFromOrientation(orientation o);
 void setup()
 {
 
-    pinMode(BUTTON_PIN,INPUT);
 
     int error;
     uint8_t c;
@@ -123,17 +112,11 @@ void loop()
         previous_orientation = current_orientation;
         Serial.println("change detected");
         sendOrientation(current_orientation);
-    }else if(!digitalRead(BUTTON_PIN) // button has been pressed
-          && previous_button_state)    // and this is the first time it's been
-                                      // pressed
     {
        // send even if orientation hasn't changed
        setup(); //re-calibrate
        sendOrientation(START_ORIENTATION);
        delay(100); //software debounce
-       previous_button_state = 0;
-    }else{
-       previous_button_state = digitalRead(BUTTON_PIN);
     }
 
     delay(200); // there's no need to poll every millisecond, let's
